@@ -43,7 +43,12 @@ namespace T3DCSharpGenerator.Generators
          MethodInternalsRegionTemplate template = new MethodInternalsRegionTemplate();
 
          string classInternals =
-            classObject["Methods"].Aggregate("", (x, method) => x + "\n" + MethodToInternal(classObject["ClassName"].ToString(), new TorqueFunction((JObject)method)).Indent().Content);
+            classObject["Methods"].Aggregate("",
+               (x, method) =>
+                  x + "\n" +
+                  MethodToInternal(classObject["ClassName"].ToString(), new TorqueFunction((JObject) method))
+                     .Indent()
+                     .Content);
 
          // We append the create function to the rest of the internals, so we can use it in the constructor
          JObject token = new JObject
@@ -70,7 +75,10 @@ namespace T3DCSharpGenerator.Generators
                ["IsStringlyTyped"] = false
             };
 
-            classInternals += MethodToInternal(classObject["ClassName"].ToString(), new TorqueFunction(registerObjectFunction)).Indent().Content;
+            classInternals +=
+               MethodToInternal(classObject["ClassName"].ToString(), new TorqueFunction(registerObjectFunction))
+                  .Indent()
+                  .Content;
          }
          template.ReplaceField("classInternals", classInternals);
          return template;
@@ -79,11 +87,14 @@ namespace T3DCSharpGenerator.Generators
       private MethodInternalTemplate MethodToInternal(string className, TorqueFunction torqueFunction)
       {
          string argsString = torqueFunction.GetNativeArgsString();
-         if (torqueFunction.Parameters.Count > 0 || torqueFunction.IsStringlyTyped.Value) argsString = ", " + argsString;
+         if (torqueFunction.Parameters.Count > 0 || torqueFunction.IsStringlyTyped.Value)
+            argsString = ", " + argsString;
          string parameterStringNative = torqueFunction.GetNativeParametersString(true);
-         if (torqueFunction.Parameters.Count > 0 || torqueFunction.IsStringlyTyped.Value) parameterStringNative = ", " + parameterStringNative;
+         if (torqueFunction.Parameters.Count > 0 || torqueFunction.IsStringlyTyped.Value)
+            parameterStringNative = ", " + parameterStringNative;
          string parameterString = torqueFunction.GetNativeParametersString();
-         if (torqueFunction.Parameters.Count > 0 || torqueFunction.IsStringlyTyped.Value) parameterString = ", " + parameterString;
+         if (torqueFunction.Parameters.Count > 0 || torqueFunction.IsStringlyTyped.Value)
+            parameterString = ", " + parameterString;
 
          MethodInternalTemplate template = new MethodInternalTemplate();
 
@@ -102,8 +113,9 @@ namespace T3DCSharpGenerator.Generators
       private MethodDeclarationRegionTemplate GenerateClassDeclarations(JToken classObject)
       {
          IEnumerable<string> classDeclarations =
-            classObject["Methods"].Select(method => new MethodDeclarationTemplate(new TorqueFunction((JObject)method)).Indent().Content);
-         
+            classObject["Methods"].Select(
+               method => new MethodDeclarationTemplate(new TorqueFunction((JObject) method)).Indent().Content);
+
          string classDecls = classDeclarations.Aggregate("", (x, y) => x + "\n" + y);
 
          if (classObject["ClassName"].ToString() == "SimObject")
@@ -118,7 +130,8 @@ namespace T3DCSharpGenerator.Generators
                ["IsStringlyTyped"] = false
             };
 
-            classDecls += "\n" + new MethodDeclarationTemplate(new TorqueFunction(registerObjectFunction)).Indent().Content;
+            classDecls += "\n" +
+                          new MethodDeclarationTemplate(new TorqueFunction(registerObjectFunction)).Indent().Content;
          }
          MethodDeclarationRegionTemplate regionTemplate = new MethodDeclarationRegionTemplate();
          regionTemplate.ReplaceField("classDecls", classDecls);

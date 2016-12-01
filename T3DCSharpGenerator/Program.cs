@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using T3DCSharpGenerator.Generators;
@@ -44,4 +43,3 @@ namespace T3DCSharpGenerator
       }
    }
 }
- 

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using T3DCSharpGenerator.Generators.Templates;
@@ -24,7 +23,8 @@ namespace T3DCSharpGenerator.Generators
          return namespacedFunctions.ToList().Select(x => OutputNamespaceFunctions(x.Key, x.Value));
       }
 
-      private static KeyValuePair<string, Template> OutputNamespaceFunctions(string namespaceName, List<TorqueFunction> functions)
+      private static KeyValuePair<string, Template> OutputNamespaceFunctions(string namespaceName,
+         List<TorqueFunction> functions)
       {
          FunctionInternalsRegionTemplate functionInternals = FunctionsToInternals(functions);
          FunctionDeclarationRegionTemplate functionDecls = FunctionsToDeclarations(functions);
