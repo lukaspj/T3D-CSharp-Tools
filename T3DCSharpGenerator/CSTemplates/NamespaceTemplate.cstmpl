@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using Torque3D.Util;
+
+namespace Torque3D
+{
+	public static unsafe class <<namespaceName>>
+	{
+<<functionInternals>>
+
+<<functionDecls>>
+	}
+}

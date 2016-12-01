@@ -1,0 +1,8 @@
+﻿#region UnsafeNativeMethods
+
+new internal struct InternalUnsafeMethods
+{
+<<functionInternals>>
+}
+
+#endregion

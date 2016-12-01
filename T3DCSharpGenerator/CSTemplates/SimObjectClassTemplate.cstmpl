@@ -1,0 +1,71 @@
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using Torque3D.Engine;
+using Torque3D.Util;
+
+namespace Torque3D
+{
+	public unsafe class <<ClassName>> : IDisposable
+	{
+		public Sim.SimObjectPtr* ObjectPtr { get; protected set; }
+
+		public SimObject()
+		{
+			ObjectPtr = Sim.WrapObject(InternalUnsafeMethods.SimObject_create());
+		}
+
+		public SimObject(Sim.SimObjectPtr* pObjPtr)
+		{
+			ObjectPtr = pObjPtr;
+		}
+
+		public SimObject(SimObject pObj)
+		{
+			ObjectPtr = pObj.ObjectPtr;
+		}
+
+		public SimObject(IntPtr pObjPtr)
+		{
+			ObjectPtr = (Sim.SimObjectPtr*) pObjPtr;
+		}
+
+		public void SetPointerFromObject(SimObject obj)
+		{
+			ObjectPtr = obj.ObjectPtr;
+		}
+
+		public bool IsDead()
+		{
+			return ((IntPtr)ObjectPtr->RefPtr) == IntPtr.Zero;
+		}
+
+		#region IDisposable
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool pDisposing)
+		{
+			if (((IntPtr)ObjectPtr->RefPtr) != IntPtr.Zero)
+			{
+			Marshal.FreeHGlobal((IntPtr) ObjectPtr);
+			}
+		}
+
+		~SimObject()
+		{
+			Dispose(false);
+		}
+
+		#endregion
+
+<<Internals>>
+
+<<Declarations>>
+	}
+}

@@ -1,0 +1,33 @@
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using Torque3D.Engine;
+using Torque3D.Util;
+
+namespace Torque3D
+{
+	public unsafe class <<ClassName>> <<ParentString>>
+	{
+		public <<ClassName>>()
+		{
+			ObjectPtr = Sim.WrapObject(InternalUnsafeMethods.<<ClassName>>_create());
+		}
+
+		public <<ClassName>>(Sim.SimObjectPtr* pObjPtr) : base(pObjPtr)
+		{
+		}
+
+		public <<ClassName>>(SimObject pObj) : base(pObj)
+		{
+		}
+
+		public <<ClassName>>(IntPtr pObjPtr) : base(pObjPtr)
+		{
+		}
+
+<<Internals>>
+
+<<Declarations>>
+	}
+}

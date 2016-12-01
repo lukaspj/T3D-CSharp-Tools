@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleLogParser", "ConsoleLogParser\ConsoleLogParser.csproj", "{DBB4A51F-0E11-4908-90C6-CF135ED866FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T3DCSharpGenerator", "T3DCSharpGenerator\T3DCSharpGenerator.csproj", "{141EC779-F41C-41AC-9639-3BECAC5B226E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{DBB4A51F-0E11-4908-90C6-CF135ED866FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBB4A51F-0E11-4908-90C6-CF135ED866FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBB4A51F-0E11-4908-90C6-CF135ED866FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{141EC779-F41C-41AC-9639-3BECAC5B226E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{141EC779-F41C-41AC-9639-3BECAC5B226E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{141EC779-F41C-41AC-9639-3BECAC5B226E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{141EC779-F41C-41AC-9639-3BECAC5B226E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
