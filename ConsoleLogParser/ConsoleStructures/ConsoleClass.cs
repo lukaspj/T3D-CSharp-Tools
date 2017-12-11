@@ -20,5 +20,6 @@ namespace ConsoleLogParser.ConsoleStructures
       public string Comment { get; set; }
       public List<ConsoleField> Fields { get; set; }
       public List<ConsoleFunction> Methods { get; set; }
+      public bool IsDatablock { get; set; }
    }
 }

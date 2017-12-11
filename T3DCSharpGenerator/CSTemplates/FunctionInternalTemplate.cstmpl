@@ -1,4 +1,4 @@
-﻿[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+﻿[UnmanagedFunctionPointer(CallingConvention.Cdecl)]<<ReturnMarshalling>>
 private delegate <<NativeReturnType>> _<<Name>>(<<NativeParametersString>>);
 private static _<<Name>> _<<Name>>Func;
 internal static <<NativeReturnType>> <<Name>>(<<NativeParametersString>>)

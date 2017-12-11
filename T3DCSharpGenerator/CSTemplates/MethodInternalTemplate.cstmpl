@@ -1,4 +1,4 @@
-﻿[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+﻿[UnmanagedFunctionPointer(CallingConvention.Cdecl)]<<ReturnMarshalling>>
 private delegate <<NativeReturnType>> _<<Name>>(IntPtr thisPtr<<NativeParametersString>>);
 private static _<<Name>> _<<Name>>Func;
 internal static <<NativeReturnType>> <<Name>>(IntPtr thisPtr<<InternalParametersString>>)
@@ -7,7 +7,7 @@ internal static <<NativeReturnType>> <<Name>>(IntPtr thisPtr<<InternalParameters
 	{
 		_<<Name>>Func =
 			(_<<Name>>)Marshal.GetDelegateForFunctionPointer(Torque3D.DllLoadUtils.GetProcAddress(Torque3D.Torque3DLibHandle,
-				"fn<<ClassName>>_<<C-Name>>"), typeof(_<<Name>>));
+				"fn_<<ClassName>>_<<C-Name>>"), typeof(_<<Name>>));
 	}
 
 	<<Return>> _<<Name>>Func(thisPtr<<NativeArgsString>>);

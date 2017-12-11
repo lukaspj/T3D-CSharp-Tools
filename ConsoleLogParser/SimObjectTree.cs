@@ -40,14 +40,16 @@ namespace ConsoleLogParser
       }
 
       private static void AddClassAndSubclasses(Dictionary<ConsoleClass, List<ConsoleClass>> subclassDictionary,
-         List<ConsoleClass> simClasses, ConsoleClass simObjectClass)
+         List<ConsoleClass> simClasses, ConsoleClass simObjectClass, bool isDatablock = false)
       {
+         simObjectClass.IsDatablock = isDatablock;
+
          // Add this class to the simClasses
          simClasses.Add(simObjectClass);
          // If this class has no subclasses, return
          if (!subclassDictionary.ContainsKey(simObjectClass)) return;
          // Add the class and all subclasses
-         subclassDictionary[simObjectClass].ForEach(x => AddClassAndSubclasses(subclassDictionary, simClasses, x));
+         subclassDictionary[simObjectClass].ForEach(x => AddClassAndSubclasses(subclassDictionary, simClasses, x, x.ClassName == "SimDataBlock"));
       }
    }
 }

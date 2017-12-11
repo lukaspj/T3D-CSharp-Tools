@@ -61,9 +61,12 @@ namespace T3DCSharpGenerator.Generators
       {
          FunctionInternalTemplate template = new FunctionInternalTemplate();
 
+         string returnMarshalling = torqueFunction.Type.GetReturnMarshalling();
+
          template.ReplaceField("Name", torqueFunction.Name);
          template.ReplaceField("C-Name", torqueFunction.RealName);
          template.ReplaceField("NativeReturnType", torqueFunction.Type.NativeReturnType);
+         template.ReplaceField("ReturnMarshalling", returnMarshalling == "" ? "" : "\n" + returnMarshalling);
          template.ReplaceField("NativeParametersString", torqueFunction.GetNativeParametersString());
          template.ReplaceField("NativeArgsString", torqueFunction.GetNativeArgsString());
          template.ReplaceField("Return", torqueFunction.Type.IsVoid ? "" : "return ");

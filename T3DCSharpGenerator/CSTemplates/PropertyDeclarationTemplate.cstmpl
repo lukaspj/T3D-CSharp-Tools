@@ -1,0 +1,5 @@
+﻿public <<FieldType>> <<FieldName>>
+{
+	get { return <<Return>>; }
+	set { setFieldValue("<<FieldName>>", <<Set>><<FieldArrayIndexArg>>); }
+}

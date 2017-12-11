@@ -9,36 +9,78 @@ namespace Torque3D
 {
 	public unsafe class <<ClassName>> : IDisposable
 	{
-		public Sim.SimObjectPtr* ObjectPtr { get; protected set; }
+		//public Sim.SimObjectPtr* ObjectPtr { get; protected set; }
+		public IntPtr ObjectPtr { get; protected set; }
 
-		public SimObject()
+		public SimObject(bool pRegister = false)
 		{
-			ObjectPtr = Sim.WrapObject(InternalUnsafeMethods.SimObject_create());
+			CreateSimObjectPtr();
+			if (pRegister) registerObject();
+		   SimDictionary.RegisterObject(this);
 		}
 
-		public SimObject(Sim.SimObjectPtr* pObjPtr)
+		public SimObject(string pName, bool pRegister = false)
+			: this(false)
 		{
-			ObjectPtr = pObjPtr;
+			Name = pName;
+			if (pRegister) registerObject();
+		}
+
+		public SimObject(string pName, string pParent, bool pRegister = false)
+         : this(pName, pRegister)
+		{
+			CopyFrom(Sim.FindObject<SimObject>(pParent));
+		}
+
+		public SimObject(string pName, SimObject pParent, bool pRegister = false)
+         : this(pName, pRegister)
+		{
+			CopyFrom(pParent);
 		}
 
 		public SimObject(SimObject pObj)
 		{
-			ObjectPtr = pObj.ObjectPtr;
+			SetPointerFromObject(pObj);
+			SimDictionary.RegisterObject(this);
 		}
 
 		public SimObject(IntPtr pObjPtr)
 		{
-			ObjectPtr = (Sim.SimObjectPtr*) pObjPtr;
+		   ObjectPtr = pObjPtr;
+		   SimDictionary.RegisterObject(this);
 		}
 
-		public void SetPointerFromObject(SimObject obj)
+		public void SetPointerFromObject(SimObject pObj)
 		{
-			ObjectPtr = obj.ObjectPtr;
+		   if (!SimDictionary.Contains(pObj)) SimDictionary.RegisterObject(pObj);
+			ObjectPtr = pObj.ObjectPtr;
+		}
+
+		public void SetPointer(IntPtr pObjPtr)
+		{
+			ObjectPtr = pObjPtr;
+		   SimDictionary.RegisterObject(this);
+      }
+
+		public T As<T>() where T : SimObject
+		{
+			return (T)SimDictionary.CreateInstance(typeof(T), this);
+		}
+
+		public SimObject As(Type t)
+		{
+			if (!typeof(SimObject).IsAssignableFrom(t)) return null;
+			return (SimObject)SimDictionary.CreateInstance(t, this);
 		}
 
 		public bool IsDead()
 		{
-			return ((IntPtr)ObjectPtr->RefPtr) == IntPtr.Zero;
+			return SimDictionary.IsDead(ObjectPtr);
+		}
+
+		protected virtual void CreateSimObjectPtr()
+		{
+			ObjectPtr = InternalUnsafeMethods.SimObject_create();
 		}
 
 		#region IDisposable
@@ -51,10 +93,12 @@ namespace Torque3D
 
 		protected virtual void Dispose(bool pDisposing)
 		{
-			if (((IntPtr)ObjectPtr->RefPtr) != IntPtr.Zero)
+			/*if (((IntPtr)ObjectPtr->RefPtr) != IntPtr.Zero)
 			{
 			Marshal.FreeHGlobal((IntPtr) ObjectPtr);
-			}
+			}*/
+
+		   SimDictionary.UnregisterObjectPtr(ObjectPtr);
 		}
 
 		~SimObject()
@@ -67,5 +111,43 @@ namespace Torque3D
 <<Internals>>
 
 <<Declarations>>
+
+<<Properties>>
+
+	#region Implicits and operators
+
+	public static bool operator ==(SimObject obj, string str)
+	{
+		if (str == null) return ReferenceEquals(obj, null);
+		if (ReferenceEquals(obj, null)) return false;
+		return obj.Name == str || obj.getId().ToString().Equals(str);
+	}
+
+	public static bool operator !=(SimObject obj, string str)
+	{
+		return !(obj == str);
+	}
+
+	public static bool operator ==(SimObject obj, object other)
+	{
+		if (ReferenceEquals(other, null)) return ReferenceEquals(obj, null);
+		if (ReferenceEquals(obj, null)) return false;
+		string str = other as string;
+		if (str != null)
+		{
+			return obj.Name == str || obj.getId().ToString().Equals(str);
+		}
+		SimObject sobj = other as SimObject;
+		if(sobj != null)
+		return obj.ObjectPtr == sobj.ObjectPtr;
+		return obj.Equals(other);
+	}
+
+	public static bool operator !=(SimObject obj, object other)
+	{
+		return !(obj == other);
+	}
+
+	#endregion
 	}
 }

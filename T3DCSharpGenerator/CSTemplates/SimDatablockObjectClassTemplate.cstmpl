@@ -33,6 +33,10 @@ namespace Torque3D
 			CopyFrom(pParent);
 		}
 
+		public <<ClassName>>(Sim.SimObjectPtr* pObjPtr) : base(pObjPtr)
+		{
+		}
+
 		public <<ClassName>>(SimObject pObj) : base(pObj)
 		{
 		}
@@ -43,7 +47,7 @@ namespace Torque3D
 
 		protected override void CreateSimObjectPtr()
 		{
-			ObjectPtr = InternalUnsafeMethods.<<ClassName>>_create();
+			ObjectPtr = Sim.WrapObject(InternalUnsafeMethods.<<ClassName>>_create());
 		}
 
 <<Internals>>

@@ -12,6 +12,7 @@ namespace Torque3D
 		public <<ClassName>>(bool pRegister = false)
 			: base(pRegister)
 		{
+			AssignId();
 		}
 
 		public <<ClassName>>(string pName, bool pRegister = false)
@@ -44,6 +45,16 @@ namespace Torque3D
 		protected override void CreateSimObjectPtr()
 		{
 			ObjectPtr = InternalUnsafeMethods.<<ClassName>>_create();
+		}
+
+		public override bool registerObject()
+		{
+			bool res = base.registerObject();
+			if (res)
+			{
+				Preload();
+			}
+			return res;
 		}
 
 <<Internals>>

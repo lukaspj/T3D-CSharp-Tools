@@ -32,6 +32,16 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-Alpha|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug-Alpha\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -39,6 +49,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,22 +59,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Generators\ClassGenerator.cs" />
+    <Compile Include="Generators\Templates\EmptyTemplate.cs" />
     <Compile Include="Generators\FunctionGenerator.cs" />
     <Compile Include="Generators\Generator.cs" />
     <Compile Include="Generators\Templates\MethodDeclarationRegionTemplate.cs" />
     <Compile Include="Generators\Templates\MethodDeclarationTemplate.cs" />
+    <Compile Include="Generators\Templates\DynamicFieldVectorPropertyDeclarationTemplate.cs" />
+    <Compile Include="Generators\Templates\PropertyDeclarationTemplate.cs" />
+    <Compile Include="Generators\Templates\PropertiesDeclarationRegionTemplate.cs" />
     <Compile Include="Generators\Templates\MethodInternalsRegionTemplate.cs" />
     <Compile Include="Generators\Templates\MethodInternalTemplate.cs" />
     <Compile Include="Generators\Templates\FunctionInternalTemplate.cs" />
     <Compile Include="Generators\Templates\FunctionInternalsRegionTemplate.cs" />
     <Compile Include="Generators\Templates\FunctionDeclarationRegionTemplate.cs" />
     <Compile Include="Generators\Templates\FunctionDeclarationTemplate.cs" />
+    <Compile Include="Generators\Templates\SimDatablockObjectClassTemplate.cs" />
+    <Compile Include="Generators\Templates\SimDatablockClassTemplate.cs" />
     <Compile Include="Generators\Templates\SimObjectClassTemplate.cs" />
     <Compile Include="Generators\Templates\SimClassTemplate.cs" />
     <Compile Include="Generators\Templates\NamespaceTemplate.cs" />
     <Compile Include="Generators\Templates\Template.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TorqueStructures\FieldDeprecatedException.cs" />
     <Compile Include="TorqueStructures\TorqueFunction.cs" />
     <Compile Include="TorqueStructures\TorqueParameter.cs" />
     <Compile Include="TorqueStructures\TorqueType.cs" />
@@ -71,6 +89,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="CSTemplates\DynamicFieldVectorPropertyDeclarationTemplate.cstmpl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="CSTemplates\PropertyDeclarationTemplate.cstmpl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="CSTemplates\PropertiesDeclarationRegionTemplate.cstmpl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="CSTemplates\MethodDeclarationRegionTemplate.cstmpl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -78,6 +105,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="CSTemplates\MethodInternalTemplate.cstmpl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="CSTemplates\SimDatablockObjectClassTemplate.cstmpl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="CSTemplates\SimDatablockClassTemplate.cstmpl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="CSTemplates\SimObjectClassTemplate.cstmpl">

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using T3DCSharpGenerator.TorqueStructures;
 
 namespace T3DCSharpGenerator.Generators.Templates
@@ -26,7 +27,9 @@ namespace T3DCSharpGenerator.Generators.Templates
             if (x.DefaultValue.Contains("::"))
             {
                prefix += $"if ({x.Name} == null) {x.Name} = {x.DefaultValue.Replace("::", ".")};\n{Utils.Indent(3)}";
-            }
+             }
+             if (x.DefaultValue.Contains("<"))
+                 Debugger.Break();
          });
 
          // Generate the return statement
@@ -58,11 +61,11 @@ namespace T3DCSharpGenerator.Generators.Templates
          {
             if (TorqueType.ClassNames.Contains(x.Type.ManagedType) && x.VarArgs)
             {
-               prefix += $"tmp_arg_list.AddRange({x.Name}.Select(x => x.getName()));\n{Utils.Indent(3)}";
+               prefix += $"tmp_arg_list.AddRange({x.Name}.Select(x => x.getId().ToString()));\n{Utils.Indent(3)}";
             }
             else if (TorqueType.ClassNames.Contains(x.Type.ManagedType))
             {
-               prefix += $"tmp_arg_list.Add({x.Name}.getName());\n{Utils.Indent(3)}";
+               prefix += $"tmp_arg_list.Add({x.Name}.getId().ToString());\n{Utils.Indent(3)}";
             }
             else if (x.Type.ManagedType == "string[]" || x.VarArgs)
             {

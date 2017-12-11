@@ -1,0 +1,4 @@
+﻿public DynamicFieldVector<<<FieldType>>> <<FieldName>>
+{
+	get { return new DynamicFieldVector<<<FieldType>>>(this, "<<FieldName>>", <<FieldCount>>, val => <<Getter>>, obj => <<Setter>>); }
+}

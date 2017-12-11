@@ -47,7 +47,7 @@ namespace ConsoleLogParser.Parsers
       public static Match MatchMethod(string line)
       {
          return Regex.Match(line.Trim(),
-            @"(?:virtual)?\s+((?:const\s+)?[\w:]+(?:\s*\*\s*)?)\s+(\w+)\s*\((?:\(((?:[\w,"" =\-\.\[\]\(\):\*]|\.\.\.|"".*"")*)\))?(\.\.\.)?\)\s");
+            @"(?:virtual)?\s+((?:const\s+)?[\w:]+(?:\s*\*\s*)?)\s+(\w+)\s*\((?:\(((?:[\w,"" =<>\-\.\[\]\(\):\*]|\.\.\.|"".*"")*)\))?(\.\.\.)?\)\s");
       }
 
       public static MatchCollection MatchMethodParameters(string parameters)

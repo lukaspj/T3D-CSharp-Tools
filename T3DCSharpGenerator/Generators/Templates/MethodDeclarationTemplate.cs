@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using T3DCSharpGenerator.TorqueStructures;
 
 namespace T3DCSharpGenerator.Generators.Templates
@@ -22,10 +23,18 @@ namespace T3DCSharpGenerator.Generators.Templates
          // First handle the fact that C++ use :: for namespaces while C# uses .
          torqueFunction.Parameters.ToList().ForEach(x =>
          {
-            if (x.DefaultValue.Contains("::"))
-            {
-               prefix += $"if ({x.Name} == null) {x.Name} = {x.DefaultValue.Replace("::", ".")};\n{Utils.Indent(3)}";
-            }
+             if (x.DefaultValue.Length > 0 && x.Type.DataType != DataType.Primitive)
+             {
+                 string defaultValue = x.DefaultValue;
+                 if (x.DefaultValue.Contains("::"))
+                 {
+                     defaultValue = defaultValue.Replace("::", ".");
+                 } else if (x.Type.DataType == DataType.Struct)
+                 {
+                     defaultValue = "new " + defaultValue;
+                 } 
+                 prefix += $"if ({x.Name} == null) {x.Name} = {defaultValue};\n{Utils.Indent(3)}";
+             }
          });
 
          string argsString = torqueFunction.GetArgsString();
@@ -34,7 +43,7 @@ namespace T3DCSharpGenerator.Generators.Templates
             argsString = ", " + argsString;
          // Generate the return statement
          string returnStr = GetReturn(torqueFunction.Type,
-            $"InternalUnsafeMethods.{torqueFunction.Name}(ObjectPtr->RefPtr->ObjPtr{argsString})");
+            $"InternalUnsafeMethods.{torqueFunction.Name}(ObjectPtr{argsString})");
 
          // Handle a return of an array of strings
          torqueFunction.Parameters.ToList().ForEach(x =>
@@ -56,16 +65,16 @@ namespace T3DCSharpGenerator.Generators.Templates
 
          // If the function _is_ stringly typed, then we have to convert all parameters to an array of 
          //  string-parameters and a parameter count.
-         prefix += $"List<string> tmp_arg_list = new List<string> {{\"\"}};\n{Utils.Indent(3)}";
+         prefix += $"List<string> tmp_arg_list = new List<string> {{\"\",\"\"}};\n{Utils.Indent(3)}";
          torqueFunction.Parameters.ToList().ForEach(x =>
          {
             if (TorqueType.ClassNames.Contains(x.Type.ManagedType) && x.VarArgs)
             {
-               prefix += $"tmp_arg_list.AddRange({x.Name}.Select(x => x.getName()));\n{Utils.Indent(3)}";
+               prefix += $"tmp_arg_list.AddRange({x.Name}.Select(x => x.getId().ToString()));\n{Utils.Indent(3)}";
             }
             else if (TorqueType.ClassNames.Contains(x.Type.ManagedType))
             {
-               prefix += $"tmp_arg_list.Add({x.Name}.getName());\n{Utils.Indent(3)}";
+               prefix += $"tmp_arg_list.Add({x.Name}.getId().ToString());\n{Utils.Indent(3)}";
             }
             else if (x.Type.ManagedType == "string[]" || x.VarArgs)
             {
@@ -78,7 +87,7 @@ namespace T3DCSharpGenerator.Generators.Templates
          });
          return prefix +
                 GetReturn(torqueFunction.Type,
-                   $"InternalUnsafeMethods.{torqueFunction.Name}(ObjectPtr->RefPtr->ObjPtr, tmp_arg_list.Count, tmp_arg_list.ToArray())") +
+                   $"InternalUnsafeMethods.{torqueFunction.Name}(ObjectPtr, tmp_arg_list.Count, tmp_arg_list.ToArray())") +
                 ";";
       }
 
@@ -94,7 +103,7 @@ namespace T3DCSharpGenerator.Generators.Templates
          string _static = isStatic ? "static " : "";
 
          return
-            $"public {_static}{torqueFunction.Type.ManagedType} {torqueFunction.Name}({torqueFunction.GetParametersString()})";
+            $"public virtual {_static}{torqueFunction.Type.ManagedType} {torqueFunction.Name}({torqueFunction.GetParametersString()})";
       }
    }
 }
